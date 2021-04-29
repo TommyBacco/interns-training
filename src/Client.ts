@@ -1,11 +1,12 @@
-import { Socket } from 'dgram';
-import { Address } from './Interfaces';
+import { createSocket, Socket } from 'dgram';
+import { Address, IMessage } from './Interfaces';
+const dgram = require('dgram');
 
 export class Client
 {
     private _id: number;
     private _username: string;
-    private _socket: Socket;
+    private _socket = dgram.createSocket('udp4');
     private _server: Address = {ip: 'localhost', port: 8080};
 
     public constructor(id: number, username: string)
@@ -29,5 +30,14 @@ export class Client
     public disconnect(): Promise<any>
     {
         this._socket.disconnect();
+        this._socket.close();
+        this._socket = createSocket('udp4');
+
+        return new Promise((resolve) => resolve(this._socket));
+    }
+
+    public send(message: string, to: number): Promise <any>
+    {
+        
     }
 }

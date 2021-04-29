@@ -1,10 +1,11 @@
 import { Socket } from 'dgram';
 import {IClient} from './Interfaces';
+const dgram = require('dgram');
 
 export class Server
 {
     private _port: number;
-    private _socket: Socket;
+    private _socket = dgram.createSocket('udp4');
     private _clients : {[id: number] : IClient};
 
     public constructor()
